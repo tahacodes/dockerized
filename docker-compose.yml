@@ -3,19 +3,15 @@ version: "3.8"
 services:
   db:
     build: mysql
-    volumes:
-      - db_data:/var/lib/mysql
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: wordpress
-      MYSQL_PASSWORD: wordpress
+    container_name: database
+    restart: unless-stopped
+    ports:
+      - 3306:3306
 
   wordpress:
     depends_on:
       - db
-    build: wordpress
+    image: wordpress
     ports:
       - "8000:80"
     restart: always
@@ -24,6 +20,3 @@ services:
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: wordpress
       WORDPRESS_DB_NAME: wordpress
-
-volumes:
-  db_data: {}
