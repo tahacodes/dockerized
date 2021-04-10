@@ -3,20 +3,22 @@ version: "3.8"
 services:
   db:
     build: mysql
-    container_name: database
-    restart: unless-stopped
     ports:
       - 3306:3306
+    environment:
+      - MARIADB_ROOT_PASSWORD=root
+      - MARIADB_DATABASE=wordpress
+      - MARIADB_PASSWORD=wordpress
+      - MARIADB_USER=wordpress
 
   wordpress:
+    image: wordpress
     depends_on:
       - db
-    image: wordpress
     ports:
-      - "8000:80"
-    restart: always
+      - 8000:80
     environment:
-      WORDPRESS_DB_HOST: db:3306
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: wordpress
-      WORDPRESS_DB_NAME: wordpress
+      - WORDPRESS_DB_HOST=db:3306
+      - WORDPRESS_DB_USER=wordpress
+      - WORDPRESS_DB_PASSWORD=wordpress
+      - WORDPRESS_DB_NAME=wordpress
