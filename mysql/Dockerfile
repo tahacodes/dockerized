@@ -1,19 +1,10 @@
 FROM ubuntu
 
-ENV DEBIAN_FRONTEND noninteractive
-ENV INITRD No
-
 RUN apt-get update && \
-    apt-get install -y mariadb-server && \
-    sed -i "s/127.0.0.1/0.0.0.0/g" /etc/mysql/mariadb.conf.d/50-server.cnf
+    DEBIAN_FRONTEND=noninteractive apt-get install -y mariadb-server
 
-ADD docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+RUN sed -i 's/bind-address/bind-address = 0.0.0.0 #/i' /etc/mysql/mariadb.conf.d/50-server.cnf
 
-VOLUME ["/var/lib/mysql"]
-
-ENTRYPOINT [ "/docker-entrypoint.sh" ]
-
-EXPOSE 3306
-
-CMD [ "mysqld" ]
+COPY queries.sql /queries.sql
+RUN /etc/init.d/mysql start && mysql -uroot --password="" -e "source /queries.sql"
+CMD /etc/init.d/mysql start && tail -f /dev/null

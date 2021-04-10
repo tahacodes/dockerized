@@ -4,32 +4,28 @@ services:
   db:
     build: mysql
     container_name: database
-    restart: unless-stopped
+    restart: always
     ports:
       - 3306:3306
-    environment:
-      - MARIADB_DATABASE=wordpress
-      - MARIADB_PASSWORD=wordpress
-      - MARIADB_USER=wordpress
-    networks:
-      - app-network
+#     networks:
+#       - app-network
 
-  wordpress:
-    image: wordpress
-    container_name: wordpress
-    restart: unless-stopped
-    depends_on:
-      - db
-    ports:
-      - 8000:80
-    environment:
-      - WORDPRESS_DB_HOST=db:3306
-      - WORDPRESS_DB_USER=wordpress
-      - WORDPRESS_DB_PASSWORD=wordpress
-      - WORDPRESS_DB_NAME=wordpress
-    networks:
-      - app-network
+#   wordpress:
+#     image: wordpress
+#     container_name: wordpress
+#     restart: unless-stopped
+#     depends_on:
+#       - db
+#     ports:
+#       - 8000:80
+#     environment:
+#       - WORDPRESS_DB_HOST=db:3306
+#       - WORDPRESS_DB_USER=wordpress
+#       - WORDPRESS_DB_PASSWORD=wordpress
+#       - WORDPRESS_DB_NAME=wordpress
+#     networks:
+#       - app-network
 
-networks:
-  app-network:
-    driver: bridge
+# networks:
+#   app-network:
+#     driver: bridge
