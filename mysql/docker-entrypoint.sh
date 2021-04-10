@@ -1,12 +1,10 @@
 #!/bin/bash
 
-MARIADB_DATABASE="wordpress"
-MARIADB_USER="wordpress"
-MARIADB_PASSWORD="wordpress"
+MARIADB_DATABASE=${MARIADB_DATABASE:-""}
+MARIADB_USER=${MARIADB_USER:-""}
+MARIADB_PASSWORD=${MARIADB_PASSWORD:-""}
 
-if [ ! -f /var/lib/mysql/ibdata1 ]; then
-    mysql_install_db
-fi
+service mysql start
 
 if [[ $MARIADB_DATABASE != "" ]]; then
     mysql -Bse "CREATE DATABASE IF NOT EXISTS \`$MARIADB_DATABASE\` CHARACTER SET utf8 COLLATE utf8_general_ci;"
@@ -14,5 +12,3 @@ if [[ $MARIADB_DATABASE != "" ]]; then
         mysql -Bse "GRANT ALL ON \`$MARIADB_DATABASE\`.* to '$MARIADB_USER'@'%' IDENTIFIED BY '$MARIADB_PASSWORD';"
     fi
 fi
-
-mysqld_safe
