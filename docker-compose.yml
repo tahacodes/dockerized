@@ -7,25 +7,20 @@ services:
     restart: always
     ports:
       - 3306:3306
-#     networks:
-#       - app-network
+    networks:
+      - app-network
 
-#   wordpress:
-#     image: wordpress
-#     container_name: wordpress
-#     restart: unless-stopped
-#     depends_on:
-#       - db
-#     ports:
-#       - 8000:80
-#     environment:
-#       - WORDPRESS_DB_HOST=db:3306
-#       - WORDPRESS_DB_USER=wordpress
-#       - WORDPRESS_DB_PASSWORD=wordpress
-#       - WORDPRESS_DB_NAME=wordpress
-#     networks:
-#       - app-network
+  wordpress:
+    build: wordpress
+    container_name: wordpress
+    restart: unless-stopped
+    depends_on:
+      - db
+    ports:
+      - 80:80
+    networks:
+      - app-network
 
-# networks:
-#   app-network:
-#     driver: bridge
+networks:
+  app-network:
+    driver: bridge
