@@ -1,4 +1,4 @@
-name: CI
+name: docker build and push
 
 on:
   workflow_dispatch:
@@ -26,9 +26,23 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: build and push database image
+      - name: build and push database
         uses: docker/build-push-action@v2.4.0
         with:
           context: mariadb
           push: true
           tags: ${{ secrets.DOCKER_REGISTRY }}/database
+
+      - name: build and push nginx
+        uses: docker/build-push-action@v2.4.0
+        with:
+          context: nginx
+          push: true
+          tags: ${{ secrets.DOCKER_REGISTRY }}/nginx
+
+      - name: build and push database wordpress
+        uses: docker/build-push-action@v2.4.0
+        with:
+          context: wordpress
+          push: true
+          tags: ${{ secrets.DOCKER_REGISTRY }}/wordpress

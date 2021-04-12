@@ -1,7 +1,9 @@
 FROM ubuntu
 
+ENV DEBIAN_FRONTEND noninteractive
+
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y php-fpm php-mysql wget curl
+    apt-get install -y php-fpm php-mysql wget curl
 
 RUN wget https://wordpress.org/latest.tar.gz
 RUN tar xzvf latest.tar.gz

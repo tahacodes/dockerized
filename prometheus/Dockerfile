@@ -1,11 +1,12 @@
 FROM ubuntu
 
+ENV DEBIAN_FRONTEND noninteractive
 ARG VER="2.26.0"
 RUN mkdir /var/lib/prometheus && mkdir /opt/prometheus && \
     for i in rules rules.d; do mkdir -p /etc/prometheus/${i}; done
 
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y wget
+    apt-get install -y wget
 
 RUN wget -c https://github.com/prometheus/prometheus/releases/download/v2.26.0/prometheus-$VER.linux-amd64.tar.gz -P /tmp/ && \
     tar xvf /tmp/prometheus-$VER.linux-amd64.tar.gz -C /tmp/ && \
