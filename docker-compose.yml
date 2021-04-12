@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   db:
-    build: mysql
+    image: ${DB_IMAGE}
     container_name: database
     restart: always
     ports:
