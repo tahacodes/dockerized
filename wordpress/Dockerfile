@@ -11,11 +11,6 @@ RUN chown -R www-data:www-data /var/www/html
 COPY wp-config.php /var/www/html/wp-config.php
 RUN curl -s https://api.wordpress.org/secret-key/1.1/salt/ >> /var/www/html/wp-config.php
 
-EXPOSE 80
+EXPOSE 9000
 
-# ADD entrypoint.sh /entrypoint.sh
-# RUN chmod +x /entrypoint.sh
-# ENTRYPOINT [ "/entrypoint.sh" ]
-
-# RUN service nginx start
 CMD [ "php-fpm7.4" ]
