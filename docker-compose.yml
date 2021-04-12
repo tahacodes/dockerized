@@ -12,23 +12,31 @@ services:
         ipv4_address: 172.100.1.3
 
   nginx:
-    image: ${NGINX_IMAGE}
+    build: nginx
     container_name: nginx
-    restart: unless-stopped
+    restart: always
     depends_on:
+      - wordpress
+    ports:
+      - 80:80
+    volumes:
+      - ./www:/var/www/html
+    links:
       - wordpress
     networks:
       app_net:
         ipv4_address: 172.100.1.4
 
   wordpress:
-    image: ${WORDPRESS_IMAGE}
+    build: wordpress
     container_name: wordpress
-    restart: unless-stopped
+    restart: always
     depends_on:
       - db
     ports:
       - 9000:9000
+    volumes:
+      - ./www:/var/www/html
     networks:
       app_net:
         ipv4_address: 172.100.1.2
