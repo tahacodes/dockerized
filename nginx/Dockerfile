@@ -5,5 +5,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
     apt-get install -y nginx
 
-ADD nginx-conf/nginx.conf /etc/nginx/nginx.conf
+COPY nginx-conf/nginx.conf /etc/nginx/nginx.conf
+
+EXPOSE 80
 CMD [ "/usr/sbin/nginx" ]

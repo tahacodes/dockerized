@@ -26,23 +26,26 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: build and push database
-        uses: docker/build-push-action@v2.4.0
-        with:
-          context: mariadb
-          push: true
-          tags: ${{ secrets.DOCKER_REGISTRY }}/database
+      - name: build database image
+        run: docker build -t database:latest mariadb
 
-      - name: build and push nginx
-        uses: docker/build-push-action@v2.4.0
-        with:
-          context: nginx
-          push: true
-          tags: ${{ secrets.DOCKER_REGISTRY }}/nginx
+      - name: build nginx image
+        run: docker build -t nginx:latest nginx
 
-      - name: build and push wordpress
-        uses: docker/build-push-action@v2.4.0
-        with:
-          context: wordpress
-          push: true
-          tags: ${{ secrets.DOCKER_REGISTRY }}/wordpress
+      - name: build wordpress image
+        run: docker build -t wordpress:latest wordpress
+
+      - name: tag database image
+        run: |
+          docker tag database ${{ secrets.DOCKER_REGISTRY }}/database
+          docker push ${{ secrets.DOCKER_REGISTRY }}/database
+
+      - name: tag nginx image
+        run: |
+          docker tag nginx ${{ secrets.DOCKER_REGISTRY }}/nginx
+          docker push ${{ secrets.DOCKER_REGISTRY }}/nginx
+
+      - name: tag wordpress image
+        run: |
+          docker tag wordpress ${{ secrets.DOCKER_REGISTRY }}/wordpress
+          docker push ${{ secrets.DOCKER_REGISTRY }}/wordpress

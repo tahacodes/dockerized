@@ -2,14 +2,13 @@ version: "3.8"
 
 services:
   db:
-    image: ${DB_IMAGE}
+    build: mariadb
     container_name: database
     restart: always
     ports:
       - 3306:3306
     networks:
       app_net:
-        ipv4_address: 172.100.1.3
 
   nginx:
     build: nginx
@@ -20,12 +19,9 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./www:/var/www/html
-    links:
-      - wordpress
+      - wp-data:/var/www/html
     networks:
       app_net:
-        ipv4_address: 172.100.1.4
 
   wordpress:
     build: wordpress
@@ -36,15 +32,13 @@ services:
     ports:
       - 9000:9000
     volumes:
-      - ./www:/var/www/html
+      - wp-data:/var/www/html
     networks:
       app_net:
-        ipv4_address: 172.100.1.2
 
 networks:
   app_net:
     driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.100.1.0/24
+
+volumes:
+  wp-data:
