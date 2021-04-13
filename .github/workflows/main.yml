@@ -35,17 +35,17 @@ jobs:
       - name: build wordpress image
         run: docker build -t wordpress:latest wordpress
 
-      - name: tag database image
+      - name: tag and push database image
         run: |
           docker tag database ${{ secrets.DOCKER_REGISTRY }}/database
           docker push ${{ secrets.DOCKER_REGISTRY }}/database
 
-      - name: tag nginx image
+      - name: tag and push nginx image
         run: |
           docker tag nginx ${{ secrets.DOCKER_REGISTRY }}/nginx
           docker push ${{ secrets.DOCKER_REGISTRY }}/nginx
 
-      - name: tag wordpress image
+      - name: tag and push wordpress image
         run: |
           docker tag wordpress ${{ secrets.DOCKER_REGISTRY }}/wordpress
           docker push ${{ secrets.DOCKER_REGISTRY }}/wordpress

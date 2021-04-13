@@ -1,18 +1,18 @@
-FROM ubuntu
+FROM php:fpm
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update && \
-    apt-get install -y php-fpm php-mysql curl wget
+RUN apt-get update -y && \
+    apt-get install -y wget libfcgi0ldbl
 
-RUN wget https://wordpress.org/latest.tar.gz
-RUN tar xzvf latest.tar.gz
+RUN wget -O /usr/local/bin/php-fpm-healthcheck \
+    https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/master/php-fpm-healthcheck \
+    && chmod +x /usr/local/bin/php-fpm-healthcheck
 
-RUN mkdir -p /var/www/html
-RUN cp -a wordpress/. /var/www/html
-RUN chown -R www-data:www-data /var/www/html
-COPY wp-config.php /var/www/html/wp-config.php
-RUN curl -s https://api.wordpress.org/secret-key/1.1/salt/ >> /var/www/html/wp-config.php
+COPY healthcheck.conf /usr/local/etc/php-fpm.d/
+RUN mkdir -p /app
+ADD ./app/ /app/
 
-EXPOSE 9000
-CMD [ "php-fpm7.4", "-F", "-R" ]
+WORKDIR /app
+
+HEALTHCHECK --interval=1m --timeout=3s CMD php-fpm-healthcheck || exit 1

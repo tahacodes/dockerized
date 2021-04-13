@@ -1,7 +1,9 @@
 FROM ubuntu
 
+ENV DEBIAN_FRONTEND noninteractive
+
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y mariadb-server
+    apt-get install -y mariadb-server
 
 RUN sed -i 's/bind-address/bind-address = 0.0.0.0 #/i' /etc/mysql/mariadb.conf.d/50-server.cnf
 
