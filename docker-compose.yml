@@ -2,18 +2,16 @@ version: "3.8"
 
 services:
   db:
-    build: mariadb
+    image: ${DB_IMAGE}
     container_name: database
     restart: always
-    ports:
-      - 3306:3306
     volumes:
       - db-data:/var/lib/mysql/
     networks:
       app_net:
 
   nginx:
-    build: nginx
+    image: ${NGINX_IMAGE}
     container_name: nginx
     restart: always
     depends_on:
@@ -26,15 +24,22 @@ services:
       app_net:
 
   wordpress:
-    build: wordpress
+    image: ${WORDPRESS_IMAGE}
     container_name: wordpress
     restart: always
     depends_on:
       - db
-    ports:
-      - 9000:9000
     volumes:
       - wp-data:/app
+    networks:
+      app_net:
+
+  prometheus:
+    image: ${PROMETHEUS_IMAGE}
+    container_name: prometheus
+    restart: always
+    ports:
+      - 9090:9090
     networks:
       app_net:
 
