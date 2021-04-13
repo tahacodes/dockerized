@@ -7,8 +7,7 @@ RUN apt-get update && \
 
 HEALTHCHECK --interval=1m --timeout=3s CMD curl --fail http://localhost/health || exit 1
 
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/nginx.conf
 RUN rm /etc/nginx/sites-enabled/default
 
 EXPOSE 80
