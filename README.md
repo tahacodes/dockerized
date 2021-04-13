@@ -6,7 +6,9 @@
 
 <b>what is it</b>
 
-    this is a dockerized platform to deploy a WordPress website by just one command, all images are written from ubuntu:latest base image except WordPress image itself which is using php:fpm because of some dependency issues.
+    this is a dockerized platform to deploy a WordPress website by just one command.
+    all images are written from ubuntu:latest base image except WordPress image itself which is using php:fpm
+    because of some dependency issues.
 
 <b>how it works</b>
 
@@ -30,7 +32,8 @@
 
 <b>explain yaml file</b>
 
-    at first we got a section called 'on' wich we can specify how this workflow would trigger and run. 'workflow_dispatch' is used for manual workflow runs.
+    at first we got a section called 'on' wich we can specify how this workflow would trigger and run.
+    'workflow_dispatch' is used for manual workflow runs.
 
     then we got 'jobs', here we specify our workflow steps:
 
