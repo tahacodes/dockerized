@@ -1,0 +1,66 @@
+---
+- name: install docker, docker-compose and deploy the platform
+  hosts: targets
+  become: true
+
+  tasks:
+    - name: change dns to shecan
+      shell: "echo -e 'nameserver 178.22.122.100\nnameserver 185.51.200.2' > /etc/resolv.conf"
+
+    - name: install requirements
+      apt:
+        name:
+          [
+            apt-transport-https,
+            ca-certificates,
+            curl,
+            software-properties-common,
+          ]
+        state: latest
+        update_cache: yes
+
+    - name: add docker gpg key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: add docker apt repository
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
+        state: present
+
+    - name: install docker
+      apt:
+        name: [docker-ce]
+        state: latest
+        update_cache: yes
+
+    - name: add ubuntu user to docker group
+      shell: "usermod -aG docker ubuntu"
+
+    - name: enable docker service
+      service:
+        name: docker
+        enabled: yes
+
+    - name: restart docker service
+      service:
+        name: docker
+        state: restarted
+
+    - name: download docker-compose binary
+      shell: 'curl -L "https://github.com/docker/compose/releases/download/1.29.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose'
+
+    - name: make docker-compose binary executable
+      file: dest=/usr/local/bin/docker-compose mode=a+x
+
+    - name: clone repository
+      git:
+        repo: "https://github.com/tahacodes/dockerized.git"
+        dest: /home/ubuntu/dockerized
+
+    - name: tear down existing services
+      shell: "cd /home/ubuntu/dockerized && docker-compose down"
+
+    - name: run 'docker-compose up -d'
+      shell: "cd /home/ubuntu/dockerized && docker-compose up -d"
