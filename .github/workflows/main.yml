@@ -8,7 +8,7 @@ on:
         required: true
         default: "workflow"
   push:
-    branches: [master]
+    branches: [main]
 
 jobs:
   tests:
