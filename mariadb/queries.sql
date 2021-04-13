@@ -1,4 +1,5 @@
-create user wordpress@'%' identified by 'wordpress';
-grant all privileges on *.* to wordpress@'%';
-flush privileges;
+CREATE DATABASE wordpress DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+CREATE USER 'wordpress'@'%' IDENTIFIED BY 'wordpress';
+GRANT ALL ON wordpress.* TO 'wordpress'@'%';
+FLUSH PRIVILEGES;
 quit

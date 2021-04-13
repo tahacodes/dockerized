@@ -9,6 +9,7 @@ HEALTHCHECK --interval=1m --timeout=3s CMD curl --fail http://localhost/health |
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+RUN rm /etc/nginx/sites-enabled/default
 
 EXPOSE 80
 CMD [ "nginx" ]
