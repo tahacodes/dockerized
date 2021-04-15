@@ -23,11 +23,11 @@
         state: latest
         update_cache: yes
 
-    - name: install docker python package
+    - name: install docker pip
       pip:
         name: docker
 
-    - name: add ubuntu user to docker group
+    - name: add user to docker group
       shell: "usermod -aG docker ubuntu"
 
     - name: enable docker service
@@ -45,7 +45,7 @@
         repo: "https://github.com/tahacodes/dockerized.git"
         dest: /home/ubuntu/dockerized
 
-    - name: Log into DockerHub
+    - name: log into docker registry
       community.docker.docker_login:
         registry_url: main-rockandcode.apps.ir-thr-at1.arvan.run
         username: "{{ docker_username }}"
